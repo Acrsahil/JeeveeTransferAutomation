@@ -1,0 +1,5 @@
+pandas
+customtkinter 
+openpyxl 
+pyinstaller
+scikit-learn
