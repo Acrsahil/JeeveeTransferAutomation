@@ -89,26 +89,6 @@ def lookup(from_tab, dest_tab, name):
 
 
 def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
-    """
-    Run the full transfer calculation.
-
-    Parameters
-    ----------
-    source_path : str   Path to raw source.xlsx (will be cleaned automatically if needed)
-    d1_path     : str   Path to d1.xlsx  (Samakhosi stock)
-    d2_path     : str   Path to d2.xlsx  (destination stock)
-    d2_name     : str   Transfer location name (e.g. "Bhaktapur")
-    out_path    : str   Where to save the output .xlsx
-
-    Returns
-    -------
-    dict with keys:
-        total       : int   Total products in source
-        below_median: int   Products where samakhosi stock < median
-        to_transfer : int   Products with a non-zero transfer qty
-        skipped     : int   Products skipped (transfer = 0)
-        out_path    : str   Resolved output file path
-    """
     # ── Clean the source file only if needed ──────────────────────────────
     cleaned_path = clean_source_data(source_path)
 
