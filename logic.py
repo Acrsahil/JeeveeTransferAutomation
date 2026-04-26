@@ -9,18 +9,7 @@ import os
 
 
 def is_data_clean(df):
-    """
-    Check if the data is already clean (has 'Product Name' column and proper format).
 
-    Parameters
-    ----------
-    df : pandas.DataFrame   DataFrame to check
-
-    Returns
-    -------
-    bool   True if data is already clean, False otherwise
-    """
-    # Check if 'Product Name' column exists
     if 'Product Name' in df.columns:
         print("hello i am inside product name if condition ")
         return True
@@ -34,18 +23,6 @@ def is_data_clean(df):
 
 
 def clean_source_data(source_path):
-    """
-    Clean the raw sales/source Excel file and save as final.xlsx
-    beside the original file. If data is already clean, returns the original path.
-
-    Parameters
-    ----------
-    source_path : str   Full path to the raw source .xlsx file
-
-    Returns
-    -------
-    str   Full path to the cleaned file (or original if already clean)
-    """
     # Check if cleaned file already exists
     out = os.path.join(os.path.dirname(source_path), "final.xlsx")
 
@@ -70,7 +47,6 @@ def clean_source_data(source_path):
 
     df['Product Name'] = df['Product Name'].str.strip()
 
-    # Save final.xlsx next to the source file
     df.to_excel(out, index=False)
     return out
 
@@ -120,7 +96,7 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
         if row['samakhosi stock'] < ans:
             result.append(0)
         else:
-            if (ans <= 2 and row[f'{d2_name} stock'] == 0) or (ans == 1):
+            if (ans <= 2 and row[f'{d2_name} stock'] == 0) or (ans == 1) or row[f'{d2_name} stock'] >= row[f'samakhosi stock']:
                 ans = 0
             result.append(ans)
 
