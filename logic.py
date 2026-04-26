@@ -1,26 +1,9 @@
-"""
-logic.py — Core transfer calculation logic.
-Edit this file to change how calculations are made.
-The UI (app.py) calls run_transfer() and expects the returned dict.
-"""
 
 import pandas as pd
 import os
 
 
 def is_data_clean(df):
-    """
-    Check if the data is already clean (has 'Product Name' column and proper format).
-
-    Parameters
-    ----------
-    df : pandas.DataFrame   DataFrame to check
-
-    Returns
-    -------
-    bool   True if data is already clean, False otherwise
-    """
-    # Check if 'Product Name' column exists
     if 'Product Name' in df.columns:
         print("hello i am inside product name if condition ")
         return True
@@ -34,19 +17,7 @@ def is_data_clean(df):
 
 
 def clean_source_data(source_path):
-    """
-    Clean the raw sales/source Excel file and save as final.xlsx
-    beside the original file. If data is already clean, returns the original path.
 
-    Parameters
-    ----------
-    source_path : str   Full path to the raw source .xlsx file
-
-    Returns
-    -------
-    str   Full path to the cleaned file (or original if already clean)
-    """
-    # Check if cleaned file already exists
     out = os.path.join(os.path.dirname(source_path), "final.xlsx")
 
     df = pd.read_excel(source_path)
@@ -76,7 +47,6 @@ def clean_source_data(source_path):
 
 
 def lookup(from_tab, dest_tab, name):
-    """Add a stock column to from_tab by matching product names in dest_tab."""
     qty = []
     for product in from_tab['Product Name']:
         match = dest_tab[dest_tab['Display Name'] == product]
@@ -89,27 +59,6 @@ def lookup(from_tab, dest_tab, name):
 
 
 def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
-    """
-    Run the full transfer calculation.
-
-    Parameters
-    ----------
-    source_path : str   Path to raw source.xlsx (will be cleaned automatically if needed)
-    d1_path     : str   Path to d1.xlsx  (Samakhosi stock)
-    d2_path     : str   Path to d2.xlsx  (destination stock)
-    d2_name     : str   Transfer location name (e.g. "Bhaktapur")
-    out_path    : str   Where to save the output .xlsx
-
-    Returns
-    -------
-    dict with keys:
-        total       : int   Total products in source
-        below_median: int   Products where samakhosi stock < median
-        to_transfer : int   Products with a non-zero transfer qty
-        skipped     : int   Products skipped (transfer = 0)
-        out_path    : str   Resolved output file path
-    """
-    # ── Clean the source file only if needed ──────────────────────────────
     cleaned_path = clean_source_data(source_path)
 
     # ── Read files ──────────────────────────────────────────────────────
