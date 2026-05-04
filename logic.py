@@ -3,6 +3,9 @@ import pandas as pd
 import os
 
 
+days_want = 20
+
+
 def is_data_clean(df):
     if 'Product Name' in df.columns:
         print("hello i am inside product name if condition ")
@@ -79,13 +82,24 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     # ── Transfer calculation ─────────────────────────────────────────────
     result = []
     for _, row in source.iterrows():
-        ans = int(min(
-            int(min(
-                row['samakhosi stock'] * 0.45,
-                abs(row['median'] - row[f'{d2_name} stock'])
-            )),
-            row['median'] / 2
-        ))
+        ans = row['median']/30
+
+        ans = ans * days_want
+
+        # ans = int(min(
+        #     int(min(
+        #         row['samakhosi stock'] * 0.45,
+        #         abs(row['median'] - row[f'{d2_name} stock'])
+        #     )),
+        #     row['median'] / 2
+        # ))
+        ans = int(min(ans, row['samakhosi stock']*0.45))
+
+        if row[f'{d2_name} stock'] < ans:
+            ans -= row[f"{d2_name} stock"]
+        else:
+            ans = 0
+
         if row['samakhosi stock'] < ans:
             result.append(0)
         else:
