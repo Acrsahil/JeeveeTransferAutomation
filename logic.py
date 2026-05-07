@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-days_want = 20
+days_want = 30
 
 
 def is_data_clean(df):
@@ -79,33 +79,17 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
 
     below_median = int((source['samakhosi stock'] < source['median']).sum())
 
-    # ── Transfer calculation ─────────────────────────────────────────────
     result = []
     for _, row in source.iterrows():
-        ans = row['median']/30
 
-        ans = ans * days_want
-
-        # ans = int(min(
-        #     int(min(
-        #         row['samakhosi stock'] * 0.45,
-        #         abs(row['median'] - row[f'{d2_name} stock'])
-        #     )),
-        #     row['median'] / 2
-        # ))
-        ans = int(min(ans, row['samakhosi stock']*0.45))
+        adu = source['median'] / 30
+        ans = adu * days_want
 
         if row[f'{d2_name} stock'] < ans:
             ans -= row[f"{d2_name} stock"]
         else:
             ans = 0
-
-        if row['samakhosi stock'] < ans:
-            result.append(0)
-        else:
-            if (ans <= 2 and row[f'{d2_name} stock'] == 0) or (ans == 1):
-                ans = 0
-            result.append(ans)
+        result.append(ans)
 
     # ── Write output ────────────────────────────────────────────────────
     source[f'{d2_name} transfer'] = result

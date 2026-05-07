@@ -131,7 +131,6 @@ class FileRow(ctk.CTkFrame):
                 text=os.path.basename(fp), text_color=C["text"])
             self.dot.configure(text="●", text_color=C["green"])
 
-
     def get(self) -> str:
         return self._path
 
