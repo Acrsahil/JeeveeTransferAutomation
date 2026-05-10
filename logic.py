@@ -74,7 +74,7 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     lookup(source, d2, f'{d2_name} stock')
 
     # ── Median across historical columns ───────────────────────────────
-    mean_calc = source.columns[1:-2]
+    mean_calc = source.columns[1:-3]
     source['median'] = source[mean_calc].median(axis=1)
 
     below_median = int((source['samakhosi stock'] < source['median']).sum())
@@ -82,7 +82,7 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     result = []
     for _, row in source.iterrows():
 
-        adu = source['median'] / 30
+        adu = row['median'] / 30
         ans = adu * days_want
 
         if row[f'{d2_name} stock'] < ans:
