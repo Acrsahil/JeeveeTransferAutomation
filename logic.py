@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-days_want = 20
+days_want = 21
 
 
 def is_data_clean(df):
@@ -82,9 +82,9 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     # ── Transfer calculation ─────────────────────────────────────────────
     result = []
     for _, row in source.iterrows():
-        ans = row['median']/30
+        ans = row['median']
 
-        ans = ans * days_want
+        # ans = ans * days_want
 
         # ans = int(min(
         #     int(min(
