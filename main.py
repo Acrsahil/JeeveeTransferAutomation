@@ -11,6 +11,7 @@ import threading
 import os
 import sys
 from tkinter import filedialog, messagebox
+from edit_outputfile import preview_output
 
 # ── Import your logic ──────────────────────────────────────────────────────
 from logic import run_transfer
@@ -35,6 +36,7 @@ C = {
     "border2":  "#2e3a5e",
     "white":    "#ffffff",
 }
+
 
 FONT_MONO = "Courier New"
 FONT_UI = "Segoe UI" if sys.platform == "win32" else "Helvetica Neue"
@@ -454,6 +456,8 @@ class App(ctk.CTk):
                 d2_name=to_name,  # This maps to the d2_name parameter in your logic
                 out_path=self.out_var.get().strip() or "transfer_output.xlsx",
             )
+
+            preview_output(stats['out_path'])
 
             # ── Update UI with returned stats ───────────────────────────
             self.after(0, self.progress.set, 0.9)
