@@ -6,10 +6,7 @@ from openpyxl.utils import get_column_letter
 
 
 def preview_output(path: str, rows: int = 5):
-    """Read an Excel file, drop the 'median' column, add borders to all
-    cells, auto-size each column to fit its content, save back to the
-    same path, and print the first `rows` rows.
-    """
+
     df = pd.read_excel(path)
 
     # ── Drop median column if present ──────────────────────────────────
@@ -45,7 +42,6 @@ def preview_output(path: str, rows: int = 5):
 
     print(df.head(rows))
     return df
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

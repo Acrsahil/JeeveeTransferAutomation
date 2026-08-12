@@ -7,6 +7,7 @@ Deps: pip install customtkinter openpyxl pandas
 """
 
 import customtkinter as ctk
+import slack as sl
 import threading
 import os
 import sys
@@ -458,6 +459,13 @@ class App(ctk.CTk):
             )
 
             preview_output(stats['out_path'])
+            notifier = sl.SlackNotifier()
+            notifier.send_file(
+                file_path=stats['out_path'],
+                initial_comment="Here is the Transfer Excel report file"
+            )
+
+
 
             # ── Update UI with returned stats ───────────────────────────
             self.after(0, self.progress.set, 0.9)
