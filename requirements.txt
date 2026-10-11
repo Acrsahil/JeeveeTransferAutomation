@@ -3,3 +3,6 @@ customtkinter
 openpyxl 
 pyinstaller
 scikit-learn
+slack-sdk
+python-dotenv
+

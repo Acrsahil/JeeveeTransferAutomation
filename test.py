@@ -1,9 +1,10 @@
-import pandas as pd
-from  logic  import is_data_clean
-
-
-df = pd.read_excel("source.xlsx")
-print(df.columns)
-
-if is_data_clean(df):
-    print("hello world")
+import tkinter as tk
+
+root = tk.Tk()
+root.title("Tkinter Test")
+root.geometry("400x300")
+
+label = tk.Label(root, text="Tkinter is working!")
+label.pack(pady=50)
+
+root.mainloop()

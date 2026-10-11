@@ -5,7 +5,7 @@ import re
 from collections import Counter
 
 
-days_want = 21
+days_want = 40
 
 
 def is_data_clean(df):
@@ -142,6 +142,14 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     d1 = pd.read_excel(d1_path)   # sam stock
     source = pd.read_excel(cleaned_path)  # Use the cleaned file
 
+    # ── Flag freebies — kept in sheet but transfer qty forced to 0 later ─
+    # Product names are in ALL CAPS; flag any row whose name contains
+    # the word FREEBIES (case=False so it still works if casing ever changes).
+    freebies_mask = source['Product Name'].astype(str).str.contains(
+        'FREEBIES', case=False, na=False
+    )
+    print(f"[freebies] {freebies_mask.sum()} freebie row(s) found — transfer will be set to 0.")
+
     # ── Lookup stock quantities ─────────────────────────────────────────
     lookup(source, d1, 'samakhosi stock')
     lookup(source, d2, f'{d2_name} stock')
@@ -155,9 +163,9 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     # ── Transfer calculation ─────────────────────────────────────────────
     result = []
     for _, row in source.iterrows():
-        ans = row['median']
+        ans = row['median']/30
 
-        # ans = ans * days_want
+        ans = ans * days_want
 
         # ans = int(min(
         #     int(min(
@@ -183,6 +191,10 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     # ── Write output ────────────────────────────────────────────────────
     source[f'{d2_name} transfer'] = result
 
+    # Zero out freebies — they appear in the sheet with all stock numbers
+    # intact but their transfer quantity is always forced to 0.
+    source.loc[freebies_mask, f'{d2_name} transfer'] = 0
+
     # Force the output file to live in the same folder as final.xlsx
     # (i.e. next to source_path), regardless of any directory passed in
     # via out_path. Only the filename portion of out_path is honored.
@@ -197,7 +209,7 @@ def run_transfer(source_path, d1_path, d2_path, d2_name, out_path):
     source.to_excel(out_path, index=False)
 
     # ── Return stats for the UI ─────────────────────────────────────────
-    non_zero = sum(1 for v in result if v > 0)
+    non_zero = sum(1 for v in source[f'{d2_name} transfer'] if v > 0)
     return {
         'total':        len(source),
         'below_median': below_median,

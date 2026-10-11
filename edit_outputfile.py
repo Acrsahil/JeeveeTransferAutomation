@@ -14,6 +14,7 @@ def preview_output(path: str, rows: int = 5):
         df = df.drop(columns=['median'])
 
     # ── Save cleaned data back to the same file ────────────────────────
+    df = df.sort_values(by=df.columns[-1], ascending=False)
     df.to_excel(path, index=False)
 
     # ── Apply borders + auto column widths ─────────────────────────────

@@ -459,11 +459,11 @@ class App(ctk.CTk):
             )
 
             preview_output(stats['out_path'])
-            notifier = sl.SlackNotifier()
-            notifier.send_file(
-                file_path=stats['out_path'],
-                initial_comment="Here is the Transfer Excel report file"
-            )
+            # notifier = sl.SlackNotifier()
+            # notifier.send_file(
+            #     file_path=stats['out_path'],
+            #     initial_comment="Here is the Transfer Excel report file"
+            # )
 
 
 
